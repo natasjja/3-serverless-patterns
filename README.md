@@ -2,9 +2,9 @@
 
 ## 4 Serverless Patterns Demo
 
-There is a directory for each pattern demo:
+There is a project directory for each pattern:
 
-- Data Processing Pipeline
+- `resize-image`: Data Processing Pipeline Pattern
 
 
 

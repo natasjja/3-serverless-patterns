@@ -1,0 +1,8 @@
+{
+    "name": "resize-image",
+    "version": "1.0.0",
+    "description": "Serverless image resize service demo",
+    "main": "handler.js",
+    "dependencies": {
+    }
+  }

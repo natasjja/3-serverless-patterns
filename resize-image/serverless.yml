@@ -1,0 +1,57 @@
+service: image-resize-service
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+
+functions:
+  resizeImage:
+    handler: handler.resizeImage
+    events:
+      - http:
+          path: resizeImage
+          method: post
+
+resources:
+ Resources:
+   ImageUploadBucket:
+     Type: AWS::S3::Bucket
+     Properties:
+       BucketName: image-resize-upload-bucket-natasja
+       CorsConfiguration:
+        CorsRules:
+          -
+            AllowedOrigins:
+              - '*'
+            AllowedHeaders:
+              - '*'
+            AllowedMethods:
+              - GET
+              - PUT
+              - POST
+              - DELETE
+              - HEAD
+            MaxAge: 3000
+   ImageOutputBucket:
+     Type: AWS::S3::Bucket
+     Properties:
+       BucketName: image-resize-output-bucket-natasja
+       CorsConfiguration:
+        CorsRules:
+          -
+            AllowedOrigins:
+              - '*'
+            AllowedHeaders:
+              - '*'
+            AllowedMethods:
+              - GET
+              - PUT
+              - POST
+              - DELETE
+              - HEAD
+            MaxAge: 3000
+
+#  Outputs:
+#     NewOutput:
+#       Description: "Description for the output"
+#       Value: "Some output value"
