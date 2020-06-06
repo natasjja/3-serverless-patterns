@@ -4,7 +4,8 @@
 
 There is a project directory for each pattern:
 
-- `resize-image`: Data Processing Pipeline Pattern
+- `data-processing`: Data Processing Pipeline Pattern
+- `simple-web-service`: Simple Web Service Pattern
 
 
 

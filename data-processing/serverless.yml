@@ -1,4 +1,4 @@
-service: image-resize-service
+service: natasjas-data-processing-service
 
 provider:
   name: aws
@@ -17,7 +17,7 @@ resources:
    ImageUploadBucket:
      Type: AWS::S3::Bucket
      Properties:
-       BucketName: image-resize-upload-bucket-natasja
+       BucketName: natasja-data-processing-upload-bucket
        CorsConfiguration:
         CorsRules:
           -
@@ -35,7 +35,7 @@ resources:
    ImageOutputBucket:
      Type: AWS::S3::Bucket
      Properties:
-       BucketName: image-resize-output-bucket-natasja
+       BucketName: natasja-data-processing-resized-bucket
        CorsConfiguration:
         CorsRules:
           -

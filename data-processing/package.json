@@ -1,0 +1,8 @@
+{
+    "name": "data-processing",
+    "version": "1.0.0",
+    "description": "Demo to show serverless data processing",
+    "main": "handler.js",
+    "dependencies": {
+    }
+  }
