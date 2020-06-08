@@ -2,7 +2,10 @@
     "name": "data-processing",
     "version": "1.0.0",
     "description": "Demo to show serverless data processing",
-    "main": "handler.js",
     "dependencies": {
+        "sharp": "^0.25.3"
+    },
+    "devDependencies": {
+        "aws-sdk": "^2.691.0"
     }
-  }
+}

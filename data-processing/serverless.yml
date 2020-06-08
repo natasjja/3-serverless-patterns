@@ -1,57 +1,35 @@
-service: natasjas-data-processing-service
+service: data-processing-service
 
 provider:
   name: aws
   runtime: nodejs12.x
+  stage: ${opt:stage, 'dev'}
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "s3:PutObject"
+      Resource: "arn:aws:s3:::${self:custom.resizedImageBucket}/*"
+    - Effect: "Allow"
+      Action:
+        - "s3:GetObject"
+      Resource: "arn:aws:s3:::${self:custom.uploadImageBucket}/*"
+
+custom:
+  resizedImageBucket: ${self:service}-${self:provider.stage}-resized-image-bucket
+  uploadImageBucket: ${self:service}-${self:provider.stage}-upload-image-bucket
 
 functions:
   resizeImage:
     handler: handler.resizeImage
+    environment: 
+      RESIZED_IMAGE_BUCKET: ${self:custom.resizedImageBucket}
     events:
-      - http:
-          path: resizeImage
-          method: post
+      - s3: ${self:custom.uploadImageBucket}
+        event: s3:ObjectCreated:*
 
 resources:
- Resources:
-   ImageUploadBucket:
-     Type: AWS::S3::Bucket
-     Properties:
-       BucketName: natasja-data-processing-upload-bucket
-       CorsConfiguration:
-        CorsRules:
-          -
-            AllowedOrigins:
-              - '*'
-            AllowedHeaders:
-              - '*'
-            AllowedMethods:
-              - GET
-              - PUT
-              - POST
-              - DELETE
-              - HEAD
-            MaxAge: 3000
-   ImageOutputBucket:
-     Type: AWS::S3::Bucket
-     Properties:
-       BucketName: natasja-data-processing-resized-bucket
-       CorsConfiguration:
-        CorsRules:
-          -
-            AllowedOrigins:
-              - '*'
-            AllowedHeaders:
-              - '*'
-            AllowedMethods:
-              - GET
-              - PUT
-              - POST
-              - DELETE
-              - HEAD
-            MaxAge: 3000
-
-#  Outputs:
-#     NewOutput:
-#       Description: "Description for the output"
-#       Value: "Some output value"
+  Resources:
+    ResizedImageBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.resizedImageBucket}
