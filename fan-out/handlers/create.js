@@ -13,7 +13,7 @@ module.exports.handler = (event, context, callback) => {
     TableName: process.env.USER_TABLE,
     Item: {
       id: uuid.v1(),
-      fullName: data.name,
+      fullName: data.fullName,
       email: data.email,
       phone: data.phone
     },

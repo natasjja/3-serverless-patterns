@@ -10,8 +10,6 @@ provider:
   iamRoleStatements:
     - Effect: Allow
       Action:
-        - dynamodb:Query
-        - dynamodb:GetItem
         - dynamodb:PutItem
       Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.USER_TABLE}"
 
@@ -23,17 +21,10 @@ functions:
           path: users/create
           method: post
           cors: true
-  get:
-    handler: handlers/get.handler
-    events:
-      - http:
-          path: users/{id}
-          method: get
-          cors: true
 
 resources:
   Resources:
-    TodosDynamoDbTable:
+    UserDynamoDbTable:
       Type: 'AWS::DynamoDB::Table'
       DeletionPolicy: Retain
       Properties:

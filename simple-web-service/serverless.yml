@@ -33,7 +33,7 @@ functions:
 
 resources:
   Resources:
-    UsersDynamoDbTable:
+    UserDynamoDbTable:
       Type: 'AWS::DynamoDB::Table'
       DeletionPolicy: Retain
       Properties:
