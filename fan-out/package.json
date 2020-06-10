@@ -1,12 +1,12 @@
 {
-    "name": "simple-web-service",
-    "version": "1.0.0",
-    "description": "Demo to show serverless simple web service",
-    "dependencies": {
-        "serverless-pseudo-parameters": "^2.5.0",
-        "uuid": "^8.1.0"
-    },
-    "devDependencies": {
-        "aws-sdk": "^2.691.0"
-    }
+  "name": "fan-out",
+  "version": "1.0.0",
+  "description": "Demo to show serverless fan-out",
+  "dependencies": {
+    "serverless-pseudo-parameters": "^2.5.0",
+    "uuid": "^8.1.0"
+  },
+  "devDependencies": {
+    "aws-sdk": "^2.691.0"
+  }
 }
