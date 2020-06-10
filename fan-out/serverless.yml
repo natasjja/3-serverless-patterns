@@ -1,5 +1,8 @@
 service: fan-out
 
+plugins:
+  - serverless-pseudo-parameters
+
 provider:
   name: aws
   runtime: nodejs12.x
@@ -31,10 +34,10 @@ functions:
           path: users/create
           method: post
           cors: true
-  # sendEmail:
-  #   handler: handlers/sendEmail.handler
-  #   events:
-  #     - sns: ${self:custom.topicArn}
+  sendEmail:
+    handler: handlers/sendEmail.handler
+    events:
+      - sns: ${self:custom.topicArn}
   sendSms:
     handler: handlers/sendSms.handler
     events:

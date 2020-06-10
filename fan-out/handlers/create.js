@@ -41,7 +41,7 @@ module.exports.handler = (event, context, callback) => {
     });
 
     const topicParams = {
-      Message: tableParams.Item,
+      Message: JSON.stringify(tableParams.Item),
       TopicArn: TOPIC_ARN,
     };
 
