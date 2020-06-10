@@ -1,0 +1,11 @@
+{
+    "name": "simple-web-service",
+    "version": "1.0.0",
+    "description": "Demo to show serverless simple web service",
+    "dependencies": {
+        "uuid": "^8.1.0"
+    },
+    "devDependencies": {
+        "aws-sdk": "^2.691.0"
+    }
+}

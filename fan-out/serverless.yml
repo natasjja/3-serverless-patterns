@@ -1,4 +1,4 @@
-service: simple-web-service
+service: fan-out
 
 provider:
   name: aws
@@ -33,7 +33,7 @@ functions:
 
 resources:
   Resources:
-    UsersDynamoDbTable:
+    TodosDynamoDbTable:
       Type: 'AWS::DynamoDB::Table'
       DeletionPolicy: Retain
       Properties:
