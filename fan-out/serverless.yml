@@ -12,29 +12,49 @@ provider:
       Action:
         - dynamodb:PutItem
       Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.USER_TABLE}"
+    - Effect: "Allow"
+      Action:
+        - "sns:Publish"
+      Resource: ${self:custom.topicArn}
+
+custom:
+  topicName: ${self:service}-${opt:stage, self:provider.stage}-message-topic
+  topicArn: arn:aws:sns:${self:provider.region}:#{AWS::AccountId}:${self:custom.topicName}
 
 functions:
   create:
     handler: handlers/create.handler
+    environment:
+      TOPIC_ARN: ${self:custom.topicArn}
     events:
       - http:
           path: users/create
           method: post
           cors: true
+  # sendEmail:
+  #   handler: handlers/sendEmail.handler
+  #   events:
+  #     - sns: ${self:custom.topicArn}
+  sendSms:
+    handler: handlers/sendSms.handler
+    events:
+      - sns: ${self:custom.topicArn}
 
 resources:
   Resources:
+    MessagingTopic:
+      Type: AWS::SNS::Topic
+      Properties:
+        TopicName: ${self:custom.topicName}
     UserDynamoDbTable:
-      Type: 'AWS::DynamoDB::Table'
+      Type: "AWS::DynamoDB::Table"
       DeletionPolicy: Retain
       Properties:
         AttributeDefinitions:
-          -
-            AttributeName: id
+          - AttributeName: id
             AttributeType: S
         KeySchema:
-          -
-            AttributeName: id
+          - AttributeName: id
             KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits: 1
