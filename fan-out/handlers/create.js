@@ -22,45 +22,27 @@ module.exports.handler = (event, context, callback) => {
   };
 
   try {
-    dynamoDb.put(tableParams, (error) => {
-      if (error) {
-        console.error(error);
-        callback(null, {
-          statusCode: error.statusCode || 501,
-          headers: { "Content-Type": "text/plain" },
-          body: "Couldn't create the user.",
-        });
-        return;
-      }
+    const dynamoDbPromise = dynamoDb.put(tableParams).promise();
 
-      const response = {
-        statusCode: 200,
-        body: JSON.stringify(tableParams.Item),
-      };
-      callback(null, response);
-    });
+    dynamoDbPromise
+      .then(() => {
+        callback(null, {
+          statusCode: 200,
+          body: JSON.stringify(tableParams.Item),
+        });
+      })
+      .catch((err) => console.error(err, err.stack));
 
     const topicParams = {
       Message: JSON.stringify(tableParams.Item),
       TopicArn: TOPIC_ARN,
     };
 
-    sns.publish(topicParams, (error) => {
-      if (error) {
-        console.error(error);
-        callback(null, {
-          statusCode: 501,
-          headers: { "Content-Type": "text/plain" },
-          body: "Couldn't send message.",
-        });
-      }
+    const publishTopicPromise = sns.publish(topicParams).promise();
 
-      const response = {
-        statusCode: 200,
-        body: JSON.stringify({ message: "Successfully sent message" }),
-      };
-      callback(null, response);
-    });
+    publishTopicPromise
+      .then((data) => console.log("MessageID is ", data.MessageId))
+      .catch((err) => console.error(err, err.stack));
   } catch (e) {
     console.log("Error: ", e);
   }

@@ -14,15 +14,24 @@ provider:
     - Effect: Allow
       Action:
         - dynamodb:PutItem
-      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.USER_TABLE}"
+      Resource: arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.USER_TABLE}
     - Effect: "Allow"
       Action:
         - "sns:Publish"
       Resource: ${self:custom.topicArn}
+    - Effect: "Allow"
+      Action:
+        - "sns:Publish"
+      Resource: "*"
+    - Effect: "Allow"
+      Action:
+        - "ses:SendEmail"
+      Resource: "*"
 
 custom:
   topicName: ${self:service}-${opt:stage, self:provider.stage}-message-topic
   topicArn: arn:aws:sns:${self:provider.region}:#{AWS::AccountId}:${self:custom.topicName}
+  sendSmsName: ${self:service}-${opt:stage, self:provider.stage}-sendSms
 
 functions:
   create:
