@@ -1,6 +1,8 @@
-# AWS Serverless Community Day
+![AWS Serverless Community Day](https://drive.google.com/uc?export=view&id=171xqIun5zu2WhOg9dw_hxvACHHwNbE7t)
 
-### **4 Serverless Patterns**
+---
+
+### **Getting started with Serverless - 4 Easy Patterns**
 
 There's a project directory for each pattern:
 
