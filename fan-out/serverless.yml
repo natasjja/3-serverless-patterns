@@ -2,6 +2,7 @@ service: fan-out
 
 plugins:
   - serverless-pseudo-parameters
+  - serverless-dotenv-plugin
 
 provider:
   name: aws
@@ -15,23 +16,20 @@ provider:
       Action:
         - dynamodb:PutItem
       Resource: arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.USER_TABLE}
+    # - Effect: "Allow"
+    # Action:
+    #   - "ses:SendEmail"
+    # Resource: arn:aws:lambda:${opt:region, self:provider.region}:#{AWS::AccountId}:function:fan-out-dev-sendEmail
     - Effect: "Allow"
       Action:
         - "sns:Publish"
-      Resource: ${self:custom.topicArn}
-    - Effect: "Allow"
-      Action:
-        - "sns:Publish"
-      Resource: "*"
-    - Effect: "Allow"
-      Action:
         - "ses:SendEmail"
       Resource: "*"
 
 custom:
   topicName: ${self:service}-${opt:stage, self:provider.stage}-message-topic
   topicArn: arn:aws:sns:${self:provider.region}:#{AWS::AccountId}:${self:custom.topicName}
-  sendSmsName: ${self:service}-${opt:stage, self:provider.stage}-sendSms
+  # sendSmsName: ${self:service}-${opt:stage, self:provider.stage}-sendSms
 
 functions:
   create:
@@ -45,6 +43,8 @@ functions:
           cors: true
   sendEmail:
     handler: handlers/sendEmail.handler
+    environment:
+      SENDER_EMAIL: ${env:SENDER_EMAIL_ADDRESS}
     events:
       - sns: ${self:custom.topicArn}
   sendSms:

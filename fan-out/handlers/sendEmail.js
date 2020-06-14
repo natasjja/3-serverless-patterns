@@ -3,6 +3,8 @@
 const AWS = require("aws-sdk");
 const ses = new AWS.SES();
 
+const { SENDER_EMAIL } = process.env;
+
 module.exports.handler = (event, context, callback) => {
   const message = event.Records[0].Sns.Message;
   const data = JSON.parse(message);
@@ -32,12 +34,12 @@ module.exports.handler = (event, context, callback) => {
         Data: `Hey ${data.fullName} 👋`,
       },
     },
-    Source: "ABC@ABC.com",
+    Source: `${SENDER_EMAIL}`,
   };
 
-  const publishEmailPromise = ses.sendEmail(params).promise();
-
-  publishEmailPromise
-    .then((data) => console.log("MessageID is ", data.MessageId))
+  ses
+    .sendEmail(params)
+    .promise()
+    .then((data) => console.log("Message ID: ", data.MessageId))
     .catch((err) => console.error(err, err.stack));
 };

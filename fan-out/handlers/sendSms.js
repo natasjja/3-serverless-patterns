@@ -12,9 +12,9 @@ module.exports.handler = (event, context, callback) => {
     PhoneNumber: data.phone,
   };
 
-  const publishTextPromise = sns.publish(params).promise();
-
-  publishTextPromise
-    .then((data) => console.log("MessageID is ", data.MessageId))
+  sns
+    .publish(params)
+    .promise()
+    .then((data) => console.log("Message ID: ", data.MessageId))
     .catch((err) => console.error(err, err.stack));
 };

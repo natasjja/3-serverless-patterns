@@ -38,9 +38,9 @@ module.exports.handler = (event, context, callback) => {
       TopicArn: TOPIC_ARN,
     };
 
-    const publishTopicPromise = sns.publish(topicParams).promise();
-
-    publishTopicPromise
+    sns
+      .publish(topicParams)
+      .promise()
       .then((data) => console.log("MessageID is ", data.MessageId))
       .catch((err) => console.error(err, err.stack));
   } catch (e) {
