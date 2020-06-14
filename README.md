@@ -2,14 +2,13 @@
 
 ---
 
-### **Getting started with Serverless - 4 Easy Patterns**
+### **Getting started with Serverless - 3 Easy Patterns**
 
 There's a project directory for each pattern:
 
 - Data Processing
 - Simple Web Service
 - Fan-Out
--
 
 &nbsp;
 
