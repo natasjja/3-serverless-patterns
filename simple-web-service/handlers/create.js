@@ -1,12 +1,11 @@
-'use strict';
+"use strict";
 
-const uuid = require('uuid');
-const AWS = require('aws-sdk');
+const uuid = require("uuid");
+const AWS = require("aws-sdk");
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
 module.exports.handler = (event, context, callback) => {
-
   const data = JSON.parse(event.body);
 
   const params = {
@@ -18,21 +17,14 @@ module.exports.handler = (event, context, callback) => {
     },
   };
 
-  dynamoDb.put(params, (error) => {
-    if (error) {
-      console.error(error);
+  dynamoDb
+    .put(params)
+    .promise()
+    .then(() => {
       callback(null, {
-        statusCode: error.statusCode || 501,
-        headers: { 'Content-Type': 'text/plain' },
-        body: 'Couldn\'t create the user.',
+        statusCode: 200,
+        body: JSON.stringify(params.Item),
       });
-      return;
-    }
-
-    const response = {
-      statusCode: 200,
-      body: JSON.stringify(params.Item),
-    };
-    callback(null, response);
-  });
+    })
+    .catch((err) => console.error(err, err.stack));
 };
