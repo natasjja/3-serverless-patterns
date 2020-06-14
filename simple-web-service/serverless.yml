@@ -6,14 +6,14 @@ provider:
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'us-east-1'}
   environment:
-    USER_TABLE: ${self:service}-${opt:stage, self:provider.stage}-users
+    USER_TABLE: ${self:service}-${self:provider.stage}-users
   iamRoleStatements:
     - Effect: Allow
       Action:
         - dynamodb:Query
         - dynamodb:GetItem
         - dynamodb:PutItem
-      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.USER_TABLE}"
+      Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.USER_TABLE}"
 
 functions:
   create:
