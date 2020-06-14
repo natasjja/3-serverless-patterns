@@ -6,9 +6,23 @@
 
 There's a project directory for each pattern:
 
-- Data Processing
-- Simple Web Service
-- Fan-Out
+#### Simple Web Service
+
+- Once deployed, copy the `GET` and `POST` methods to an API client like Postman.
+
+#### Data Processing
+
+- Once deployed, go to S3 in the AWS console and upload an image to the `upload-image-bucket`
+
+- Check the `resized-image-bucket` for the processed and resized image.
+
+#### Fan-Out
+
+- Create a `.env` file for this service and add an email for the sender's email address, set to `SENDER_EMAIL_ADDRESS` variable.
+
+- You'll then need to go to SES in the AWS console and verify the address you're sending the email **from** and **to** due to the sandbox restrictions.
+
+- Deploy the service
 
 &nbsp;
 
@@ -28,4 +42,4 @@ There's a project directory for each pattern:
 
 Each service was created with a Serverless Framework template.
 
-Run `serverless create --template aws-nodejs` in a new direcrtory to create your own services.
+Run `serverless create --template aws-nodejs` in a new direcrtory to create your own service!
