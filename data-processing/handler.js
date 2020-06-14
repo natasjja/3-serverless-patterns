@@ -1,30 +1,27 @@
-'use strict';
+"use strict";
 
-const AWS = require('aws-sdk');
-const Sharp = require('sharp');
+const AWS = require("aws-sdk");
+const Sharp = require("sharp");
 const s3 = new AWS.S3();
 
-const RESIZED_BUCKET = process.env.RESIZED_IMAGE_BUCKET;
+const { RESIZED_IMAGE_BUCKET } = process.env;
 
 module.exports.resizeImage = async (event, context, callback) => {
-
   const s3Object = event.Records[0].s3;
   const uploadBucket = s3Object.bucket.name;
-  const imageKey = decodeURIComponent(s3Object.object.key.replace(/\+/g, ' '));
- 
+  const imageKey = decodeURIComponent(s3Object.object.key.replace(/\+/g, " "));
+
   const response = await s3
     .getObject({ Bucket: uploadBucket, Key: imageKey })
     .promise();
 
   console.log(`Resizing image ${imageKey}`);
 
-  const resizedImageBuffer = await Sharp(response.Body)
-    .resize(200)
-    .toBuffer();
+  const resizedImageBuffer = await Sharp(response.Body).resize(200).toBuffer();
 
   await s3
     .putObject({
-      Bucket: RESIZED_BUCKET,
+      Bucket: RESIZED_IMAGE_BUCKET,
       Key: makeFileName(imageKey),
       Body: resizedImageBuffer,
       ContentType: response.ContentType,
@@ -33,6 +30,6 @@ module.exports.resizeImage = async (event, context, callback) => {
 };
 
 const makeFileName = (imageKey) => {
-  const imageKeyParts = imageKey.split('.');
+  const imageKeyParts = imageKey.split(".");
   return `${imageKeyParts[0]}-resized.${imageKeyParts[1]}`;
-}
+};
