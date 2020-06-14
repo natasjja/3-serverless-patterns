@@ -14,7 +14,7 @@ provider:
     USER_TABLE: ${self:service}-${self:provider.stage}-users
 
 custom:
-  topicName: ${self:service}-${opt:stage, self:provider.stage}-message-topic
+  topicName: ${self:service}-${self:provider.stage}-message-topic
   topicArn: arn:aws:sns:${self:provider.region}:#{AWS::AccountId}:${self:custom.topicName}
 
 functions:
