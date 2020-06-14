@@ -18,7 +18,7 @@ There's a project directory for each pattern:
 
 #### Fan-Out
 
-- Create a `.env` file for this service and add an email for the sender's email address, set to `SENDER_EMAIL_ADDRESS` variable.
+- Create a `.env` file for this service and add an email for the sender's email address, set to `SENDER_EMAIL_ADDRESS`.
 
 - You'll then need to go to SES in the AWS console and verify the address you're sending the email **from** and **to** due to the sandbox restrictions.
 
