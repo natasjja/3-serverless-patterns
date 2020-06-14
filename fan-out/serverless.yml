@@ -3,6 +3,7 @@ service: fan-out
 plugins:
   - serverless-pseudo-parameters
   - serverless-dotenv-plugin
+  - serverless-iam-roles-per-function
 
 provider:
   name: aws
@@ -10,32 +11,26 @@ provider:
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'us-east-1'}
   environment:
-    USER_TABLE: ${self:service}-${opt:stage, self:provider.stage}-users
-  iamRoleStatements:
-    - Effect: Allow
-      Action:
-        - dynamodb:PutItem
-      Resource: arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.USER_TABLE}
-    # - Effect: "Allow"
-    # Action:
-    #   - "ses:SendEmail"
-    # Resource: arn:aws:lambda:${opt:region, self:provider.region}:#{AWS::AccountId}:function:fan-out-dev-sendEmail
-    - Effect: "Allow"
-      Action:
-        - "sns:Publish"
-        - "ses:SendEmail"
-      Resource: "*"
+    USER_TABLE: ${self:service}-${self:provider.stage}-users
 
 custom:
   topicName: ${self:service}-${opt:stage, self:provider.stage}-message-topic
   topicArn: arn:aws:sns:${self:provider.region}:#{AWS::AccountId}:${self:custom.topicName}
-  # sendSmsName: ${self:service}-${opt:stage, self:provider.stage}-sendSms
 
 functions:
   create:
     handler: handlers/create.handler
     environment:
       TOPIC_ARN: ${self:custom.topicArn}
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:PutItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.USER_TABLE}
+      - Effect: Allow
+        Action:
+          - "sns:Publish"
+        Resource: ${self:custom.topicArn}
     events:
       - http:
           path: users/create
@@ -45,10 +40,20 @@ functions:
     handler: handlers/sendEmail.handler
     environment:
       SENDER_EMAIL: ${env:SENDER_EMAIL_ADDRESS}
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - "ses:SendEmail"
+        Resource: arn:aws:ses:${self:provider.region}:#{AWS::AccountId}:*
     events:
       - sns: ${self:custom.topicArn}
   sendSms:
     handler: handlers/sendSms.handler
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - "sns:Publish"
+        Resource: "*"
     events:
       - sns: ${self:custom.topicArn}
 

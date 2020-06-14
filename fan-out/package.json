@@ -8,6 +8,7 @@
   },
   "devDependencies": {
     "aws-sdk": "^2.691.0",
-    "serverless-dotenv-plugin": "^2.4.2"
+    "serverless-dotenv-plugin": "^2.4.2",
+    "serverless-iam-roles-per-function": "^2.0.2"
   }
 }
