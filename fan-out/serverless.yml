@@ -50,6 +50,10 @@ functions:
   sendSms:
     handler: handlers/sendSms.handler
     iamRoleStatements:
+      - Effect: Deny
+        Action:
+          - "sns:Publish"
+        Resource: "arn:aws:sns:*:*:*"
       - Effect: Allow
         Action:
           - "sns:Publish"
