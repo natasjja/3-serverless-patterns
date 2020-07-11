@@ -43,3 +43,9 @@ There's a project directory for each pattern:
 Each service was created with a Serverless Framework template.
 
 Run `serverless create --template aws-nodejs` in a new direcrtory to create your own service!
+
+### Video
+
+The video for the talk can now be viewed here:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/-qFiTczX_tI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
