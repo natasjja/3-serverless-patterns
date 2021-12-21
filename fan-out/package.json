@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Demo to show serverless fan-out",
   "dependencies": {
-    "uuid": "^8.1.0"
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "aws-sdk": "^2.691.0",
