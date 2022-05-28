@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "description": "Demo to show serverless data processing",
     "dependencies": {
-        "sharp": "^0.25.3"
+        "sharp": "^0.30.5"
     },
     "devDependencies": {
         "aws-sdk": "^2.691.0"
